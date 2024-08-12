@@ -41,4 +41,6 @@ public class BonEntree {
     @ManyToOne
     @JoinColumn(name = "entrepot_id", nullable = false)
     private Entrepot entrepot;
+
+
 }
