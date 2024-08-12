@@ -1,77 +1,58 @@
 package com.test.controllers;
 
 import com.test.entities.Fournisseur;
-import com.test.entities.Produit;
-import com.test.entities.Utilisateur;
 import com.test.services.FournisseurService;
-import com.test.services.UtilisateurService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/fournisseurs")
+@RequestMapping("/fournisseur")
 public class FournisseurController {
 
     @Autowired
     private FournisseurService fournisseurService;
-    @Autowired
-    private UtilisateurService utilisateurService;
-
-    @GetMapping("/count")
-    public int getFournisseursCount() {
-        return fournisseurService.getFournisseursCount();
-    }
-
-    @GetMapping
-    public List<Fournisseur> getAllFournisseurs() {
-        return fournisseurService.findAll();
-    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Fournisseur> getFournisseurById(@PathVariable int id) {
-        return fournisseurService.findById(id)
-                .map(fournisseur -> ResponseEntity.ok().body(fournisseur))
-                .orElse(ResponseEntity.notFound().build());
+    public Optional<Fournisseur> getFournisseur(@PathVariable int id) {
+        return fournisseurService.findById(id);
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Fournisseur> createFournisseur(@RequestBody Fournisseur fournisseur, @RequestParam String email) {
-        Utilisateur utilisateur = utilisateurService.findByOneEmail(email);
-        if (utilisateur == null) {
-            return ResponseEntity.badRequest().body(null);
-        }
-        fournisseur.setCreatedBy(utilisateur);
-        fournisseur.setEntrepot(utilisateur.getEntrepot());
-
-        Fournisseur savedFournisseur = fournisseurService.save(fournisseur);
-        return ResponseEntity.ok(savedFournisseur);
+    public Fournisseur createFournisseur(@RequestBody Fournisseur fournisseur) {
+        return fournisseurService.save(fournisseur);
     }
 
-    @GetMapping("/current")
-    public ResponseEntity<List<Fournisseur>> getCategoriesForCurrentUser(@RequestParam String email) {
-        Utilisateur utilisateur = utilisateurService.findByEmail(email).orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-        List<Fournisseur> fournisseurs = fournisseurService.findByEntrepotId(utilisateur.getEntrepot().getId());
-        return ResponseEntity.ok(fournisseurs);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Fournisseur> updateFournisseur(@PathVariable int id, @RequestBody Fournisseur fournisseurDetails) {
-        return fournisseurService.findById(id)
-                .map(fournisseur -> {
-                    fournisseur.setFournName(fournisseurDetails.getFournName());
-                    fournisseur.setAdresse(fournisseurDetails.getAdresse());
-                    fournisseur.setTelephone(fournisseurDetails.getTelephone());
-                    Fournisseur updatedFournisseur = fournisseurService.save(fournisseur);
-                    return ResponseEntity.ok().body(updatedFournisseur);
-                }).orElse(ResponseEntity.notFound().build());
+    @PutMapping("/update/{id}")
+    public Fournisseur updateFournisseur(@PathVariable int id, @RequestBody Fournisseur fournisseur) {
+        fournisseur.setId(id);
+        return fournisseurService.save(fournisseur);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFournisseur(@PathVariable int id) {
+    public void deleteFournisseur(@PathVariable int id) {
         fournisseurService.deleteById(id);
-        return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/count")
+    public long getFournisseursCount() {
+        return fournisseurService.getFournisseursCount();
+    }
+
+    @GetMapping("/entrepot/{entrepotId}")
+    public List<Fournisseur> getFournisseursByEntrepot(@PathVariable int entrepotId) {
+        return fournisseurService.findByEntrepotId(entrepotId);
+    }
+
+    @GetMapping("/public")
+    public List<Fournisseur> getPublicFournisseurs() {
+        return fournisseurService.findPublicFournisseurs();
+    }
+
+//    @GetMapping("/top-rated")
+//    public List<Fournisseur> getTopRatedFournisseurs() {
+//        return fournisseurService.findTopRatedFournisseurs();
+//    }
 }
