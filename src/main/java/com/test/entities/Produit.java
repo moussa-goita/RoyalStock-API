@@ -38,4 +38,6 @@ public class Produit {
     @ManyToOne
     @JoinColumn(name = "entrepot_id", nullable = false)
     private Entrepot entrepot;
+    @Column(name = "qr_code", nullable = false)
+    private String qrCode;
 }
