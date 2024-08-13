@@ -37,6 +37,7 @@ public class FournisseurController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
     @PostMapping("/create")
     public ResponseEntity<Fournisseur> createFournisseur(@RequestBody Fournisseur fournisseur, @RequestParam String email) {
         Utilisateur utilisateur = utilisateurService.findByOneEmail(email);
@@ -74,4 +75,34 @@ public class FournisseurController {
         fournisseurService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    //
+
+    @PutMapping("/{id}/rendre-public")
+    public ResponseEntity<Fournisseur> rendreFournisseurPublic(@PathVariable Long id) {
+        Fournisseur fournisseurMisAJour = fournisseurService.mettreFournisseurPublic(id);
+        return ResponseEntity.ok(fournisseurMisAJour);
+    }
+    // Méthode pour récupérer les fournisseurs publics
+    @GetMapping("public")
+    public List<Fournisseur> getFournisseursPublic() {
+        return fournisseurService.fourPublic();
+    }
+
+    //
+
+    @PostMapping("/{id}/noter")
+    public ResponseEntity<Fournisseur> noterFournisseur(@PathVariable int id, @RequestParam double note) {
+        Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note);
+        return ResponseEntity.ok(fournisseurMisAJour);
+    }
+
+    @GetMapping("/top-rated")
+    public ResponseEntity<List<Fournisseur>> getTopRatedFournisseurs() {
+        List<Fournisseur> fournisseurs = fournisseurService.findAll();
+        fournisseurs.sort((f1, f2) -> Double.compare(f2.getNoteMoyenne(), f1.getNoteMoyenne()));
+        List<Fournisseur> topRatedFournisseurs = fournisseurs.stream().limit(10).toList();
+        return ResponseEntity.ok(topRatedFournisseurs);
+    }
+
 }

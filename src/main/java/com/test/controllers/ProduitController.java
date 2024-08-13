@@ -4,14 +4,18 @@ import com.test.dto.TopEntreeDTO;
 import com.test.dto.TopVenduDTO;
 import com.test.entities.Produit;
 import com.test.entities.Utilisateur;
+import com.test.repositories.ProduitRepository;
 import com.test.services.ProduitService;
 import com.test.services.UtilisateurService;
+import jakarta.annotation.Resource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/produits")
@@ -19,6 +23,8 @@ public class ProduitController {
 
     @Autowired
     private ProduitService produitService;
+    @Autowired
+    private ProduitRepository produitRepository;
     @Autowired
     private UtilisateurService utilisateurService;
 
@@ -33,13 +39,19 @@ public class ProduitController {
                 .map(produit -> ResponseEntity.ok().body(produit))
                 .orElse(ResponseEntity.notFound().build());
     }
-
+    @GetMapping("/api/produits/{id}")
+    public ResponseEntity<Produit> getProduitById(@PathVariable Long id) {
+        Optional<Produit> produit = produitRepository.findById(Math.toIntExact(id));
+        return produit.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
     @PostMapping
     public ResponseEntity<Produit> createProduit(@RequestBody Produit produit) {
         try {
             if (produit.getCategorie() == null || produit.getCategorie().getId() == 0) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
             }
+
+            // Appeler le service pour sauvegarder le produit et générer le QR code
             Produit savedProduit = produitService.save(produit);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedProduit);
         } catch (Exception e) {
@@ -47,6 +59,18 @@ public class ProduitController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+//    public ResponseEntity<Produit> createProduit(@RequestBody Produit produit) {
+//        try {
+//            if (produit.getCategorie() == null || produit.getCategorie().getId() == 0) {
+//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+//            }
+//            Produit savedProduit = produitService.save(produit);
+//            return ResponseEntity.status(HttpStatus.CREATED).body(savedProduit);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+//        }
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Produit> updateProduit(@PathVariable int id, @RequestBody Produit produitDetails) {
