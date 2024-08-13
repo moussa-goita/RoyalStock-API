@@ -1,4 +1,4 @@
-src/main/java/com/test/entities/NoteFournisseur.javapackage com.test.entities;
+package com.test.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
