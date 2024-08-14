@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class FournisseurService {
@@ -39,15 +38,18 @@ public class FournisseurService {
     public List<Fournisseur> findByEntrepotId(int entrepotId) {
         return fournisseurRepository.findByEntrepotId(entrepotId);
     }
+    // Méthode pour obtenir la note moyenne d'un fournisseur par ID
+    public double getMoyenneNotes(int fournisseurId) {
+        Double moyenneNotes = fournisseurRepository.findMoyenneNotesByFournisseurId(fournisseurId);
+        if (moyenneNotes != null) {
+            return moyenneNotes;
+        } else {
+            throw new RuntimeException("Fournisseur non trouvé ou sans notes avec l'ID : " + fournisseurId);
+        }
+    }
 
     public List<Fournisseur> findPublicFournisseurs() {
         return fournisseurRepository.findByStatutFournisseur(StatutFournisseur.PUBLIC);
     }
 
-//    public List<Fournisseur> findTopRatedFournisseurs() {
-//        List<Fournisseur> fournisseurs = fournisseurRepository.findByStatutFournisseur(StatutFournisseur.PUBLIC);
-//        return fournisseurs.stream()
-//                .filter(f -> f.getMoyenneNote() >= 4.5)
-//                .collect(Collectors.toList());
-//    }
 }

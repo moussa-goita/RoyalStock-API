@@ -3,6 +3,7 @@ package com.test.controllers;
 import com.test.entities.Fournisseur;
 import com.test.services.FournisseurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,7 +25,15 @@ public class FournisseurController {
     public Fournisseur createFournisseur(@RequestBody Fournisseur fournisseur) {
         return fournisseurService.save(fournisseur);
     }
-
+    @GetMapping("/{id}/moyenne-notes")
+    public ResponseEntity<Double> getMoyenneNotes(@PathVariable int id) {
+        try {
+            double moyenneNotes = fournisseurService.getMoyenneNotes(id);
+            return ResponseEntity.ok(moyenneNotes);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
     @PutMapping("/update/{id}")
     public Fournisseur updateFournisseur(@PathVariable int id, @RequestBody Fournisseur fournisseur) {
         fournisseur.setId(id);
@@ -51,8 +60,4 @@ public class FournisseurController {
         return fournisseurService.findPublicFournisseurs();
     }
 
-//    @GetMapping("/top-rated")
-//    public List<Fournisseur> getTopRatedFournisseurs() {
-//        return fournisseurService.findTopRatedFournisseurs();
-//    }
 }

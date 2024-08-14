@@ -22,8 +22,6 @@ public class Fournisseur {
     @Column(name = "fourn_name", nullable = false)
     private String fournName;
 
-
-
     @Column(name = "adresse")
     private String adresse;
 
@@ -47,6 +45,7 @@ public class Fournisseur {
 
     @Column(name = "contrat")
     private String contrat;
+
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<NoteFournisseur> notes = new ArrayList<>();
