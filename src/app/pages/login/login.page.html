@@ -1,0 +1,33 @@
+<ion-toolbar class="container">
+  <div class="logo-container">
+    <img src="assets/LogoRoyale%202.png" alt="Royal Stock Logo" class="logo"/>
+  </div>
+  <p class="tagline">Le meilleur système pour faciliter votre gestion de stocks</p>
+</ion-toolbar>
+
+<ion-content class="ion-padding">
+  <form (ngSubmit)="login()">
+    <ion-item>
+      <ion-label position="floating">
+        <ion-icon name="mail"></ion-icon>
+        Email
+      </ion-label>
+      <ion-input type="email" [(ngModel)]="email" name="email" required></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">
+        <ion-icon name="lock-closed"></ion-icon>
+        Mot De Passe
+      </ion-label>
+      <ion-input [type]="passwordVisible ? 'text' : 'password'" [(ngModel)]="password" name="password"
+                 required></ion-input>
+      <ion-button fill="clear" slot="end" (click)="togglePasswordVisibility()">
+        <ion-icon [name]="passwordVisible ? 'eye-off' : 'eye'"></ion-icon>
+      </ion-button>
+    </ion-item>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+    <ion-button type="submit" expand="block">Connexion</ion-button>
+  </form>
+</ion-content>

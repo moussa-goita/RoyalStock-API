@@ -1,0 +1,58 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Liste des Bons de Sortie</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-button (click)="goToAddForm()">
+    <ion-icon slot="start" name="add-outline"></ion-icon>
+    Ajouter
+  </ion-button>
+
+  <div class="card-container">
+    <ion-card *ngFor="let bonSortie of filteredBonSorties">
+      <ion-card-content text-center>
+        <ion-text color="primary">
+          <h6 class="large-bold-text">
+            <ion-icon name="document"></ion-icon> Bon Sortie n°{{ bonSortie.id }} 
+          </h6>
+        </ion-text>
+        <ion-text color="primary">
+          <h6 class="large-bold-text">
+            <ion-icon name="calendar"></ion-icon> Date: <span>{{ bonSortie.dateSortie| date: 'dd/MM/yyyy' }}</span>
+          </h6>
+        </ion-text>
+        <ion-text color="primary">
+          <h6 class="large-bold-text">
+            <ion-icon name="clipboard"></ion-icon> Motif: <span>{{ bonSortie.motif.title }}</span>
+          </h6>
+        </ion-text>
+        <ion-text color="primary">
+          <h6 class="large-bold-text">
+            <ion-icon name="person"></ion-icon> Utilisateur: {{ bonSortie.utilisateur.username }}
+          </h6>
+        </ion-text>
+
+        <div class="ion-text-center">
+          <ion-button fill="clear" color="danger" (click)="printBonSortie(bonSortie.id)">
+            <ion-icon slot="icon-only" name="print"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="primary">
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-button>
+          <ion-button fill="clear" color="danger" (click)="deleteBonSortie(bonSortie.id)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-button>
+          <ion-button (click)="goToAddDetail()" fill="clear">
+            <ion-icon slot="icon-only" name="eye"></ion-icon>
+            Detail
+          </ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

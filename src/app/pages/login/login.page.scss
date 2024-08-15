@@ -1,0 +1,95 @@
+/* Global Styles */
+
+.container {
+  background: #251D73;
+  border-radius: 0px 0px 50px 50px;
+}
+
+ion-content {
+  --background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+}
+
+
+ion-toolbar {
+  --background: #251D73; /* Darker shade for the toolbar background */
+
+  ion-title {
+    font-weight: bold;
+    color: #fff; /* White text for the title */
+    text-align: center;
+  }
+
+}
+
+/* Logo Container */
+.logo-container {
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 10px;
+
+  .logo {
+    width: 160px; /* Adjust based on your design */
+    height: auto;
+  }
+}
+
+/* Tagline Styling */
+.tagline {
+  text-align: center;
+  color: #ffffff; /* Gray color for tagline */
+  font-style: normal;
+  font-size: 12px;
+  margin-bottom: 30px;
+}
+
+/* Form Styles */
+form {
+  width: 100%;
+
+  ion-item {
+    --background: #F5F5F5; /* Light gray background for form items */
+    border-radius: 8px;
+    margin-bottom: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for form items */
+
+    ion-label {
+      color: #251D73; /* Matching the primary color */
+      font-weight: bold;
+
+      ion-icon {
+        color: #251D73; /* Matching the primary color */
+        margin-right: 8px;
+      }
+    }
+
+    ion-input {
+      color: #000000; /* Dark text color for input */
+    }
+
+    ion-button {
+      ion-icon {
+        color: #ffffff; /* Matching the primary color */
+      }
+    }
+  }
+
+  .alert {
+    margin-top: 10px;
+    color: #dc2e2e; /* Red for error messages */
+  }
+}
+
+/* Button Styles */
+ion-button {
+  --background: #251D73; /* Primary button color */
+  border-radius: 8px;
+  font-weight: bold;
+  margin-top: 20px;
+  color: #ffffff;
+}

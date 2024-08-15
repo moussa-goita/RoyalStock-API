@@ -1,0 +1,163 @@
+/* General Styles for the Header */
+ion-header {
+  ion-toolbar {
+    --background: #251D73; /* Set header background color */
+    --color: #ffffff; /* Set text color */
+    display: flex;
+    justify-content: space-between; /* Space out title and button */
+    align-items: center;
+
+    ion-title {
+      font-weight: bold;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    ion-button {
+      --background: #F5004F; /* Transparent background for logout button */
+      --color: #ffff; /* Red color for logout button */
+      border: 1px solid #F5004F; /* Border matching the button color */
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+
+      &:hover {
+        --background: #FF6B6B; /* Background color on hover */
+        --color: #ffffff; /* Text color on hover */
+      }
+    }
+  }
+}
+
+/* Styling for the Profile Content */
+ion-content {
+  ion-header {
+    ion-toolbar {
+      --background: #251D73; /* Matching the header color on condense */
+      --color: #ffffff;
+
+      ion-title {
+        font-size: 20px;
+      }
+
+      ion-button {
+        --background: #F5004F; /* Transparent background for logout button */
+        --color: #ffff; /* Red color for logout button */
+        border: 1px solid #F5004F; /* Border matching the button color */
+        font-weight: 500;
+        padding: 5px 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          --background: #FF6B6B; /* Background color on hover */
+          --color: #ffffff; /* Text color on hover */
+        }
+      }
+    }
+  }
+
+  ion-card {
+    margin: 20px; /* Add margin for better spacing */
+    border-radius: 12px; /* Round corners */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+
+    ion-card-header {
+      text-align: center;
+      ion-card-title {
+        font-size: 18px;
+        color: #251D73; /* Primary color for title */
+      }
+    }
+
+    ion-card-content {
+      ion-list {
+        ion-item {
+          --background: #f5f5f5; /* Light background for input items */
+          --color: #333; /* Dark text color */
+          margin-bottom: 15px; /* Spacing between items */
+          border-radius: 8px; /* Rounded corners */
+          box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05); /* Light shadow for inputs */
+          padding: 10px 15px; /* Increased padding for better usability */
+
+          ion-label {
+            color: #666; /* Slightly lighter label color */
+            font-weight: 600;
+            font-size: 14px;
+          }
+
+          ion-input {
+            color: #333; /* Ensure text is visible */
+            font-size: 16px;
+            padding: 5px 0;
+
+            &::placeholder {
+              color: #aaa; /* Placeholder text color */
+              font-style: italic;
+            }
+          }
+
+          &.input-valid {
+            --background: #e0ffe0; /* Light green background for valid inputs */
+            ion-label {
+              color: #28a745; /* Green text color for valid labels */
+            }
+          }
+
+          &.input-invalid {
+            --background: #ffe0e0; /* Light red background for invalid inputs */
+            ion-label {
+              color: #dc3545; /* Red text color for invalid labels */
+            }
+          }
+        }
+      }
+
+      ion-button {
+        --background: #251D73; /* Primary background color */
+        --color: #ffffff; /* White text color */
+        --background-activated: #3A2E8D; /* Darker shade when button is activated */
+        font-weight: 600; /* Bold text */
+        border-radius: 25px; /* Rounded button */
+        padding: 12px 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for the button */
+        transition: transform 0.2s ease;
+
+        &:hover {
+          transform: scale(1.05); /* Slightly scale up on hover */
+        }
+      }
+    }
+  }
+}
+
+/* Input Feedback Styles */
+ion-item {
+  position: relative;
+
+  ion-input {
+    --padding-start: 10px; /* Add padding to the left side */
+  }
+
+  /* Styling for feedback text (minlength, maxlength, etc.) */
+  &::after {
+    content: attr(error-text);
+    position: absolute;
+    bottom: -20px;
+    left: 10px;
+    font-size: 12px;
+    color: #dc3545; /* Red color for errors */
+    visibility: hidden; /* Hidden by default */
+  }
+
+  &.input-invalid::after {
+    visibility: visible; /* Show error message if input is invalid */
+  }
+
+  &.input-valid::after {
+    content: attr(success-text); /* Show success message if input is valid */
+    color: #28a745; /* Green color for success */
+    visibility: visible;
+  }
+}

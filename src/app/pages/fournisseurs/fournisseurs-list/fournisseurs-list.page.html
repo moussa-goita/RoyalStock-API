@@ -1,0 +1,90 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Fournisseurs</ion-title>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-button (click)="goToAddForm()">
+    <ion-icon slot="start" name="add-outline"></ion-icon>
+    Ajouter
+  </ion-button>
+  <ion-card>
+    <ion-card-content>
+      <div class="card-header">
+        <div class="header-left">
+          <ion-text color="primary">
+            <h6 class="large-bold-text">
+              <ion-icon name="person"></ion-icon> Nom: <span>Moussa</span>
+            </h6>
+          </ion-text>
+        </div>
+        <div class="header-right">
+          <ion-text>
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-icon name="star" color="warning"></ion-icon>
+            <ion-icon name="star" color="warning"></ion-icon>
+          </ion-text>
+        </div>
+      </div>
+
+      <ion-text color="primary">
+        <h6 class="large-bold-text">
+          <ion-icon name="location"></ion-icon> Adresse: <span>Kalaban</span>
+        </h6>
+      </ion-text>
+
+      <ion-text color="primary">
+        <h6 class="large-bold-text">
+          <ion-icon name="call"></ion-icon> Téléphone: <span>2222</span>
+        </h6>
+      </ion-text>
+
+      <ion-text color="primary">
+        <h6 class="large-bold-text">
+          <ion-icon name="briefcase"></ion-icon> Service: <span>Poisson</span>
+        </h6>
+      </ion-text>
+
+      <ion-item>
+        <ion-label position="floating">Commentaire</ion-label>
+        <ion-textarea rows="1" placeholder="Ajouter un commentaire"></ion-textarea>
+      </ion-item>
+
+      <div class="action-buttons-container">
+        <ion-button fill="clear" color="secondary" (click)="openImageModal()">
+          <ion-icon slot="icon-only" name="image"></ion-icon>
+        </ion-button>
+        <ion-item lines="none" class="no-padding">
+          <ion-toggle></ion-toggle>
+        </ion-item>
+        <ion-button fill="clear" color="primary" (click)="editFournisseur()">
+          <ion-icon slot="icon-only" name="create"></ion-icon>
+        </ion-button>
+        <ion-button fill="clear" color="danger" (click)="deleteFournisseur()">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Image du Fournisseur</ion-title>
+        <ion-buttons slot="end">
+          <ion-button (click)="closeModal()">Fermer</ion-button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <img [src]="imageUrl" alt="Image du Fournisseur" style="width: 100%; height: auto;" />
+    </ion-content>
+  </ion-modal>
+  
+</ion-content>

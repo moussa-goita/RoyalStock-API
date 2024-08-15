@@ -1,0 +1,7 @@
+{
+  "name": "RoyalStock",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

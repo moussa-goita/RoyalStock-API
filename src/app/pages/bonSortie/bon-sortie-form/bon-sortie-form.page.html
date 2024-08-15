@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>bon-sortie-form</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ajouter Bon de Sortie</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Ajout du formGroup ici -->
+  <form [formGroup]="bonSortieForm" (ngSubmit)="onSubmit()">
+    <ion-item class="ion-margin-bottom">
+      <ion-input
+        label="Date"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Sélectionnez une date"
+        formControlName="dateSortie"
+        type="date"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-select 
+        label="Motif" 
+        label-placement="floating" 
+        fill="outline" 
+        placeholder="Entrez le motif" 
+        formControlName="motif"
+        [(ngModel)]="selectedMotifId"
+        required>
+        <ion-select-option *ngFor="let motif of motifs" [value]="motif.id">
+          {{motif.title}}
+        </ion-select-option> 
+      </ion-select>
+    </ion-item>
+
+    <!-- Boutons d'action -->
+    <ion-footer>
+      <ion-toolbar>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="full" color="primary" type="submit" [disabled]="!bonSortieForm.valid">
+              Ajouter
+            </ion-button>
+          </ion-col>
+          <ion-col>
+            <ion-button expand="full" color="danger" (click)="onCancel()">
+              Annuler
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-toolbar>
+    </ion-footer>
+  </form>
+</ion-content>

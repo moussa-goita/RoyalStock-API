@@ -1,0 +1,60 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Mon Profil</ion-title>
+    <ion-button slot="end" *ngIf="currentUser" (click)="logout()" fill="outline" color="danger">Se déconnecter</ion-button>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mon Profil</ion-title>
+      <ion-button slot="end" fill="outline" color="danger">Se déconnecter</ion-button>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-list>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Formulaire</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <form (ngSubmit)="updateProfile()">
+          <ion-list>
+            <ion-item>
+              <ion-label position="floating">Nom d'utilisateur</ion-label>
+              <ion-input [(ngModel)]="utilisateur.username" name="username"
+                         placeholder="Nom d'utilisateur" maxlength="20"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Nouveau Mot de Passe</ion-label>
+              <ion-input type="password" [(ngModel)]="newPassword"
+                         name="newPassword" minlength="8" maxlength="30"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Confirmer le Mot de Passe</ion-label>
+              <ion-input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"
+                         minlength="8" maxlength="30"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Email</ion-label>
+              <ion-input type="email" [(ngModel)]="utilisateur.email" name="email"
+                         placeholder="email@domain.com" maxlength="30"></ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-label position="floating">Téléphone</ion-label>
+              <ion-input type="tel" [(ngModel)]="utilisateur.contact" name="contact"
+                         placeholder="88-88-88-88" maxlength="8"></ion-input>
+            </ion-item>
+
+            <ion-button type="submit" expand="block" color="primary" shape="round" class="ion-margin-top">Sauvegarder</ion-button>
+          </ion-list>
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+</ion-content>

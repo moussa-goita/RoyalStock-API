@@ -1,0 +1,80 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Ajouter Fournisseur</ion-title>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Ajouter Fournisseur</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <form [formGroup]="fournisseurForm" (ngSubmit)="onSubmit()">
+    <ion-item class="ion-margin-bottom">
+      <ion-input
+        label="Nom"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Nom du fournisseur"
+        formControlName="nom"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-input
+        label="Adresse"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Adresse du fournisseur"
+        formControlName="adresse"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-input
+        label="Téléphone"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Numéro de téléphone"
+        formControlName="telephone"
+        type="tel"
+        required
+      ></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin-bottom">
+      <ion-input
+        label="Service"
+        label-placement="floating"
+        fill="outline"
+        placeholder="Service proposé"
+        formControlName="service"
+        required
+      ></ion-input>
+    </ion-item>
+  </form>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="full" color="primary" type="submit" [disabled]="!fournisseurForm.valid">
+          Ajouter
+        </ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="full" color="danger" (click)="onCancel()">
+          Annuler
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>
