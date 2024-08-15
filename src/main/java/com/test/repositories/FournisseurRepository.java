@@ -17,6 +17,8 @@ public interface FournisseurRepository extends JpaRepository<Fournisseur, Intege
     Optional<Fournisseur> findById(Long id);
 
     List<Fournisseur> findAllByStatut(Statut statut);
+    List<Fournisseur> findAllByNoteMoyenne(double noteMoyenne);
+    List<Fournisseur> findAllByNombreNotes(int nombreNotes);
 
 
 }

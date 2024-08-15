@@ -5,6 +5,8 @@ import com.test.entities.Produit;
 import com.test.entities.Utilisateur;
 import com.test.services.FournisseurService;
 import com.test.services.UtilisateurService;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -92,9 +94,20 @@ public class FournisseurController {
     //
 
     @PostMapping("/{id}/noter")
-    public ResponseEntity<Fournisseur> noterFournisseur(@PathVariable int id, @RequestParam double note) {
-        Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note);
-        return ResponseEntity.ok(fournisseurMisAJour);
+    public ResponseEntity<?> noterFournisseur(@PathVariable int id, @RequestParam double note) {
+        // Validation de la note
+        if (note < 1 || note > 5) {
+            return ResponseEntity.badRequest().body("La note doit être comprise entre 1 et 5");
+        }
+
+        try {
+            Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note);
+            return ResponseEntity.ok(fournisseurMisAJour);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/top-rated")
@@ -103,6 +116,18 @@ public class FournisseurController {
         fournisseurs.sort((f1, f2) -> Double.compare(f2.getNoteMoyenne(), f1.getNoteMoyenne()));
         List<Fournisseur> topRatedFournisseurs = fournisseurs.stream().limit(10).toList();
         return ResponseEntity.ok(topRatedFournisseurs);
+    }
+
+    @GetMapping("/by-note")
+    public ResponseEntity<List<Fournisseur>> getFournisseursByNoteMoyenne(@RequestParam double noteMoyenne) {
+        List<Fournisseur> fournisseurs = fournisseurService.findAllByNoteMoyenne(noteMoyenne);
+        return ResponseEntity.ok(fournisseurs);
+    }
+
+    @GetMapping("/by-nombre-notes")
+    public ResponseEntity<List<Fournisseur>> getFournisseursByNombreNotes(@RequestParam int nombreNotes) {
+        List<Fournisseur> fournisseurs = fournisseurService.findAllByNombreNotes(nombreNotes);
+        return ResponseEntity.ok(fournisseurs);
     }
 
 }
