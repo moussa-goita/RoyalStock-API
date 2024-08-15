@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Table(name = "fournisseurs")
 @Data
@@ -33,5 +31,10 @@ public class Fournisseur {
     @ManyToOne
     @JoinColumn(name = "entrepot_id", nullable = false)
     private Entrepot entrepot;
+
+    @ManyToOne
+    @JoinColumn(name = "imageContrat", nullable = false)
+    private Image imageContrat;
+
 
 }

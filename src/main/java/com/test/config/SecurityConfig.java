@@ -37,7 +37,7 @@ public class SecurityConfig {
                         //.requestMatchers("/api/bonentrees/**", "/api/detailsentrees/**").hasAnyRole("ADMIN", "MANAGER")
                         //.requestMatchers("/api/bonsorties/**", "/api/detailssorties/**").hasAnyRole("ADMIN", "MANAGER")
                         //.requestMatchers("/api/produits/**").hasAnyRole("ADMIN", "MANAGER", "VENDEUR")
-                        //.requestMatchers("/api/fournisseurs/**", "/api/categories/**", "/api/notifications/**").hasAnyRole("ADMIN", "MANAGER")
+                        //.requestMatchers("/api/fournisseurs/**", "/api/categories/**", "/api/notifications/**", "/api/image/**").hasAnyRole("ADMIN", "MANAGER")
                         .anyRequest().permitAll()
                 )
                 .httpBasic(withDefaults())

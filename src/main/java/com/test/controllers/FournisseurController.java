@@ -1,14 +1,18 @@
 package com.test.controllers;
 
 import com.test.entities.Fournisseur;
+import com.test.entities.Image;
 import com.test.entities.Produit;
 import com.test.entities.Utilisateur;
 import com.test.services.FournisseurService;
+import com.test.services.ImageService;
 import com.test.services.UtilisateurService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,6 +23,8 @@ public class FournisseurController {
     private FournisseurService fournisseurService;
     @Autowired
     private UtilisateurService utilisateurService;
+    @Autowired
+    private ImageService imageService;
 
     @GetMapping("/count")
     public int getFournisseursCount() {
@@ -38,17 +44,30 @@ public class FournisseurController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Fournisseur> createFournisseur(@RequestBody Fournisseur fournisseur, @RequestParam String email) {
+    public ResponseEntity<Fournisseur> createFournisseur(@RequestParam("fourName") String fourName,
+                                                         @RequestParam("adresse") String adresse,
+                                                         @RequestParam("telephone") String telephone,
+                                                         @RequestParam("email") String email,
+                                                         @RequestParam("image") MultipartFile file) throws IOException {
         Utilisateur utilisateur = utilisateurService.findByOneEmail(email);
-        if (utilisateur == null) {
+        if (utilisateur == null || utilisateur.getEntrepot() == null) {
             return ResponseEntity.badRequest().body(null);
         }
-        fournisseur.setCreatedBy(utilisateur);
-        fournisseur.setEntrepot(utilisateur.getEntrepot());
 
-        Fournisseur savedFournisseur = fournisseurService.save(fournisseur);
+        Image imageContrat = imageService.saveImage(file);
+
+        Fournisseur fournisseur1 = new Fournisseur();
+        fournisseur1.setCreatedBy(utilisateur);
+        fournisseur1.setEntrepot(utilisateur.getEntrepot());
+        fournisseur1.setImageContrat(imageContrat);
+        fournisseur1.setTelephone(telephone);
+        fournisseur1.setAdresse(adresse);
+        fournisseur1.setFournName(fourName);
+
+        Fournisseur savedFournisseur = fournisseurService.save(fournisseur1);
         return ResponseEntity.ok(savedFournisseur);
     }
+
 
     @GetMapping("/current")
     public ResponseEntity<List<Fournisseur>> getCategoriesForCurrentUser(@RequestParam String email) {

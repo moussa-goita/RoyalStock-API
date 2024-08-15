@@ -38,5 +38,7 @@ public class FournisseurService {
     public List<Fournisseur> findByEntrepotId(int entrepotId) {
         return fournisseurRepository.findByEntrepotId(entrepotId);
     }
+
+
 }
 
