@@ -23,12 +23,6 @@ public class BonEntreeController {
     private BonEntreeService bonEntreeService;
 
     @Autowired
-    private ProduitService produitService;
-
-    @Autowired
-    private FournisseurService fournisseurService;
-
-    @Autowired
     private UtilisateurService utilisateurService;
 
     @GetMapping("entrepot/{entrepotId}")

@@ -24,7 +24,8 @@ public class DetailSortieService {
     private ProduitRepository produitRepository;
     @Autowired
     private BonSortieRepository bonSortieRepository;
-
+    @Autowired
+    private NotificationService notificationService;
     public List<DetailSortie> findAll() {
         return detailSortieRepository.findAll();
     }
@@ -53,6 +54,8 @@ public class DetailSortieService {
                 System.out.println(produit.getQuantity());
                 produitRepository.save(produit);
                 bonSortieRepository.save(bonSortie);
+                // Vérifier le seuil et envoyer une notification si nécessaire
+                notificationService.notificationSeuil(produit);
             }
 
             return savedDetailSortie;

@@ -5,6 +5,8 @@ import com.test.entities.Produit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface BonEntreeRepository extends JpaRepository<BonEntree, Integer> {
@@ -12,5 +14,6 @@ public interface BonEntreeRepository extends JpaRepository<BonEntree, Integer> {
     List<Object[]> countByMonth();
 
     List<BonEntree> findAllByEntrepotId(int entrepotId);
+    List<BonEntree> findAllByStatutAndDateCommandeBefore(String statut, LocalDate dateCommande);
 
 }
