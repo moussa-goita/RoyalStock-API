@@ -65,4 +65,17 @@ public class EntrepotController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // Rechercher les entrepôts à proximité d'une localisation donnée
+    @GetMapping("/nearby")
+    public List<Entrepot> findNearbyEntrepots(@RequestParam double latitude, @RequestParam double longitude, @RequestParam double distance) {
+        return entrepotService.getNearbyEntrepots(latitude, longitude, distance);
+    }
+    // Récupérer tous les entrepôts avec leurs localisations
+    @GetMapping("/location")
+    public List<Entrepot> findAllWithLocation() {
+        return entrepotService.findAllWithLocation();
+    }
 }
+
+

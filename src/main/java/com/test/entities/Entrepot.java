@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.awt.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -35,4 +36,15 @@ public class Entrepot {
 
     @Column(name = "abonnement_end", nullable = false)
     private LocalDate abonnementEnd;
+
+    //Des attributs pour stocker les coordonnées géographiques dans l'entité Entrepot.
+    @Column(name = "latitude", nullable = false)
+    private double latitude;  // Nouvelle colonne pour la latitude
+
+    @Column(name = "longitude", nullable = false)
+    private double longitude; // Nouvelle colonne pour la longitude
+
+    @Column(columnDefinition = "POINT")
+    private Point location; // Nouvelle propriété pour stocker les coordonnées géographiques
+
 }

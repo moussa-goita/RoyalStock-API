@@ -4,8 +4,11 @@ import com.test.entities.Entrepot;
 import com.test.repositories.EntrepotRepository;
 import com.test.repositories.UtilisateurRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.geo.Distance;
+import org.springframework.data.geo.Metrics;
 import org.springframework.stereotype.Service;
 
+import java.awt.*;
 import java.time.chrono.ChronoLocalDate;
 import java.time.chrono.ChronoPeriod;
 import java.time.chrono.Chronology;
@@ -73,5 +76,17 @@ public class EntrepotService {
             }
         };
         return entrepot.getAbonnementEnd().isAfter(currentDate);
+    }
+
+
+    // Exemple de méthode pour récupérer les entrepôts à proximité d'une localisation
+    public List<Entrepot> getNearbyEntrepots(double latitude, double longitude, double distance) {
+        String location = String.format("POINT(%f %f)", longitude, latitude);
+        return entrepotRepository.findByLocationNear(location, distance);
+    }
+
+    // Exemple de méthode pour localiser tous les entrepôts
+    public List<Entrepot> findAllWithLocation() {
+        return entrepotRepository.findAll();
     }
 }
