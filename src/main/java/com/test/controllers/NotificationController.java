@@ -1,12 +1,20 @@
 package com.test.controllers;
 
+import com.test.entities.Entrepot;
 import com.test.entities.Notification;
+import com.test.entities.Utilisateur;
+import com.test.repositories.EntrepotRepository;
+import com.test.repositories.UtilisateurRepository;
+import com.test.services.EntrepotService;
 import com.test.services.NotificationService;
+import com.test.services.UtilisateurService;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,61 +24,48 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/api/notifications")
 public class NotificationController {
 
-    private static final Logger logger = LoggerFactory.getLogger(NotificationController.class);
-
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private UtilisateurRepository utilisateurRepository;
+    @Autowired
+    private EntrepotRepository entrepotRepository;
 
+    @GetMapping("/utilisateur/{utilisateurId}")
+    public ResponseEntity<List<Notification>> getNotificationsByUtilisateur(@PathVariable Integer utilisateurId) {
+        List<Notification> notifications = notificationService.getNotificationsByUtilisateur(utilisateurId);
+        return ResponseEntity.ok(notifications);
+    }
+    @GetMapping("/entrepot/{entrepotId}")
+    public ResponseEntity<List<Notification>> getNotificationsByEntrepot(@PathVariable Integer entrepotId) {
+        List<Notification> notifications = notificationService.getNotificationsByEntrepot(entrepotId);
+        return ResponseEntity.ok(notifications);
+    }
     @GetMapping
-    public List<Notification> getAllNotifications() {
-        logger.info("GET /api/notifications");
-        return notificationService.findAll();
+    public ResponseEntity<List<Notification>> getAllNotifications() {
+        List<Notification> notifications = notificationService.getAllNotifications();
+        return ResponseEntity.ok(notifications);
     }
 
-    @GetMapping("/unread")
-    public List<Notification> getUnreadNotifications() {
-        logger.info("GET /api/notifications/unread");
-        return notificationService.findUnread();
+    @GetMapping("/count")
+    public long countNotificationsByType(
+            @RequestParam String type,
+            @RequestParam Integer entrepotId) {
+
+        Entrepot entrepot = entrepotRepository.findById(entrepotId)
+            .orElseThrow(() -> new RuntimeException("Entrepôt non trouvé"));
+
+        return notificationService.countNotificationsByType(type, entrepot);
+    }
+    @GetMapping("/filter")
+    public List<Notification> filterNotificationsByType(
+            @RequestParam String type,
+            @RequestParam Integer entrepotId) {
+
+        Entrepot entrepot = entrepotRepository.findById(entrepotId)
+                .orElseThrow(() -> new RuntimeException("Entrepôt non trouvé"));
+
+        return notificationService.filterNotificationsByType(type, entrepot);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Notification> getNotificationById(@PathVariable int id) {
-        logger.info("GET /api/notifications/{}", id);
-        return notificationService.findById(id)
-                .map(notification -> ResponseEntity.ok().body(notification))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
-    @PatchMapping("/{id}/read")
-    public ResponseEntity<Void> markAsRead(@PathVariable int id) {
-        logger.info("PATCH /api/notifications/{}/read", id);
-        notificationService.markAsRead(id);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping
-    public Notification createNotification(@RequestBody Notification notification) {
-        logger.info("POST /api/notifications");
-        return notificationService.save(notification);
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Notification> updateNotification(@PathVariable int id, @RequestBody Notification notificationDetails) {
-        logger.info("PUT /api/notifications/{}", id);
-        return notificationService.findById(id)
-                .map(notification -> {
-                    notification.setContenu(notificationDetails.getContenu());
-                    notification.setDateNotif(notificationDetails.getDateNotif());
-                    notification.setUtilisateur(notificationDetails.getUtilisateur());
-                    Notification updatedNotification = notificationService.save(notification);
-                    return ResponseEntity.ok().body(updatedNotification);
-                }).orElse(ResponseEntity.notFound().build());
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteNotification(@PathVariable int id) {
-        logger.info("DELETE /api/notifications/{}", id);
-        notificationService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
 }

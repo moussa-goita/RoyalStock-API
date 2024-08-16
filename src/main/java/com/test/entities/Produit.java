@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,6 +28,11 @@ public class Produit {
 
     @Column(name = "quantity")
     private int quantity;
+    @Temporal(TemporalType.DATE)
+    private LocalDate dateExpiration;
+
+    @Column(name = "seuil")
+    private int seuil= 0;
 
     @ManyToOne
     @JoinColumn(name = "categories_id", nullable = false)
