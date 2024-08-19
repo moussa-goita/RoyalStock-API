@@ -9,12 +9,15 @@ import com.test.dto.TopEntreeDTO;
 import com.test.dto.TopVenduDTO;
 import com.test.entities.Produit;
 import com.test.repositories.ProduitRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -23,6 +26,8 @@ ProduitService {
 
     @Autowired
     private ProduitRepository produitRepository;
+    @Autowired
+    private NotificationService notificationService;
 
     public List<Produit> findAll() {
         return produitRepository.findAll();
@@ -32,9 +37,22 @@ ProduitService {
         return produitRepository.findById(id);
     }
 
-//    public Produit save(Produit produit) {
-//        return produitRepository.save(produit);
-//    }
+    //cette methode nous permets verifier les produits exipiré depuis le lancement de l'appli vue on est pas sur un server
+    @PostConstruct
+    public void init() {
+        verifierProduitsExpirantBientot();
+    }
+
+    // Exécution chaque jour à 00h00 et s'il trouve des produits proches a l'expiration automatiquement la notif est creer
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void verifierProduitsExpirantBientot() {
+        LocalDate dansDeuxSemaines = LocalDate.now().plusWeeks(2);
+        List<Produit> produitsExpirantBientot = produitRepository.findAllByDateExpirationBefore(dansDeuxSemaines);
+
+        for (Produit produit : produitsExpirantBientot) {
+            notificationService.envoyerNotificationExpiration(produit);
+        }
+    }
  public Produit save(Produit produit) {
         String qrCodeText = produit.getProductName() + " - " + produit.getId();
         produit.setQrCode(generateQRCode(qrCodeText));
@@ -65,11 +83,9 @@ ProduitService {
             throw new RuntimeException("Error generating QR code", e);
         }
     }
-
     public void deleteById(int id) {
         produitRepository.deleteById(id);
     }
-
 
     public List<Produit> findByEntrepotId(int entrepotId) {
         return produitRepository.findByEntrepotId(entrepotId);
