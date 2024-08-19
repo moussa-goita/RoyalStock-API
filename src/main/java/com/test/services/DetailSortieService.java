@@ -26,6 +26,7 @@ public class DetailSortieService {
     private BonSortieRepository bonSortieRepository;
     @Autowired
     private NotificationService notificationService;
+
     public List<DetailSortie> findAll() {
         return detailSortieRepository.findAll();
     }

@@ -53,7 +53,7 @@ public class NotificationController {
             @RequestParam Integer entrepotId) {
 
         Entrepot entrepot = entrepotRepository.findById(entrepotId)
-            .orElseThrow(() -> new RuntimeException("Entrepôt non trouvé"));
+                .orElseThrow(() -> new RuntimeException("Entrepôt non trouvé"));
 
         return notificationService.countNotificationsByType(type, entrepot);
     }

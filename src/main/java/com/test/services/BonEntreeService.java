@@ -33,6 +33,7 @@ public class BonEntreeService {
 
     @Autowired
     private ProduitRepository produitRepository;
+    private UtilisateurService utilisateurService;
 
     @Autowired
     private NotificationService notificationService;
@@ -42,6 +43,9 @@ public class BonEntreeService {
     public void init() {
         verifierBonsNonValides();
     }
+//    public List<BonEntree> findAll(int entrepotId) {
+//        return bonEntreeRepository.findAllByEntrepotId(entrepotId);
+//    }
 
     // S'exécute chaque jour à 00h00
     @Scheduled(cron = "0 0 0 * * ?")

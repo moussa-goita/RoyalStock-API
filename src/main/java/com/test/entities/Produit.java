@@ -45,6 +45,7 @@ public class Produit {
     @ManyToOne
     @JoinColumn(name = "entrepot_id", nullable = false)
     private Entrepot entrepot;
-    @Column(name = "qr_code", nullable = false)
+
+    @Column(name = "qr_code", nullable = false, length = 8000)
     private String qrCode;
 }

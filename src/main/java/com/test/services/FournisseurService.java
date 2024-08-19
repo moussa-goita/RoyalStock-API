@@ -76,6 +76,7 @@ public class FournisseurService {
                 .filter(f -> f.getNombreNotes() == nombreNotes)
                 .collect(Collectors.toList());
     }
+    //
 
     
     //Methode pour noter un fournisseur

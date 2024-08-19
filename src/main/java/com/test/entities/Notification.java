@@ -17,12 +17,17 @@ import java.util.Date;
 public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int Id;
 
+
+    @Column(name = "contenu")
+    private String contenu;
     private String message;
     private String type;
     private boolean isRead = false;
 
+    @Column(name = "date_notif")
+    private LocalDateTime dateNotif;
     @ManyToOne
     @JoinColumn(name = "produit_id")
     private Produit produit;

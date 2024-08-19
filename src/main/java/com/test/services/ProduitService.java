@@ -53,6 +53,9 @@ ProduitService {
             notificationService.envoyerNotificationExpiration(produit);
         }
     }
+//    public Produit save(Produit produit) {
+//        return produitRepository.save(produit);
+//    }
  public Produit save(Produit produit) {
         String qrCodeText = produit.getProductName() + " - " + produit.getId();
         produit.setQrCode(generateQRCode(qrCodeText));
@@ -83,9 +86,11 @@ ProduitService {
             throw new RuntimeException("Error generating QR code", e);
         }
     }
+
     public void deleteById(int id) {
         produitRepository.deleteById(id);
     }
+
 
     public List<Produit> findByEntrepotId(int entrepotId) {
         return produitRepository.findByEntrepotId(entrepotId);
