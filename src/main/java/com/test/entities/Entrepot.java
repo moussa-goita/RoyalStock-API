@@ -35,4 +35,11 @@ public class Entrepot {
 
     @Column(name = "abonnement_end", nullable = false)
     private LocalDate abonnementEnd;
+
+    // Ajout de la localisation
+    @Column(name = "latitude", nullable = true)
+    private Double latitude;
+
+    @Column(name = "longitude", nullable = true)
+    private Double longitude;
 }

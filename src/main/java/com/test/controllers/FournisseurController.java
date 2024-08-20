@@ -2,16 +2,16 @@ package com.test.controllers;
 
 import com.test.entities.Fournisseur;
 import com.test.entities.Produit;
+import com.test.entities.Statut;
 import com.test.entities.Utilisateur;
 import com.test.services.FournisseurService;
 import com.test.services.UtilisateurService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/fournisseurs")
@@ -67,6 +67,12 @@ public class FournisseurController {
                     fournisseur.setFournName(fournisseurDetails.getFournName());
                     fournisseur.setAdresse(fournisseurDetails.getAdresse());
                     fournisseur.setTelephone(fournisseurDetails.getTelephone());
+                    fournisseur.setEmail(fournisseurDetails.getEmail());
+                    fournisseur.setStatut(fournisseurDetails.getStatut());
+                    fournisseur.setCommentaire(fournisseurDetails.getCommentaire());
+                    fournisseur.setNombreNotes(fournisseurDetails.getNombreNotes());
+                    fournisseur.setNoteMoyenne(fournisseurDetails.getNoteMoyenne());
+                    fournisseur.setService(fournisseurDetails.getService());
                     Fournisseur updatedFournisseur = fournisseurService.save(fournisseur);
                     return ResponseEntity.ok().body(updatedFournisseur);
                 }).orElse(ResponseEntity.notFound().build());
@@ -78,36 +84,47 @@ public class FournisseurController {
         return ResponseEntity.noContent().build();
     }
 
-    //
+    @PutMapping("/{id}/modifier-statut")
+    public ResponseEntity<Fournisseur> modifierStatutFournisseur(@PathVariable int id, @RequestBody String newStatut) {
+        Fournisseur fournisseur = fournisseurService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Fournisseur non trouvé"));
 
-    @PutMapping("/{id}/rendre-public")
-    public ResponseEntity<Fournisseur> rendreFournisseurPublic(@PathVariable Long id) {
-        Fournisseur fournisseurMisAJour = fournisseurService.mettreFournisseurPublic(id);
+        if ("PUBLIC".equals(newStatut)) {
+            fournisseur.setStatut(Statut.PUBLIC);
+        } else if ("PRIVE".equals(newStatut)) {
+            fournisseur.setStatut(Statut.PRIVE);
+        }
+
+        Fournisseur fournisseurMisAJour = fournisseurService.save(fournisseur);
         return ResponseEntity.ok(fournisseurMisAJour);
     }
+
     // Méthode pour récupérer les fournisseurs publics
     @GetMapping("public")
     public List<Fournisseur> getFournisseursPublic() {
         return fournisseurService.fourPublic();
     }
 
-    //
-
     @PostMapping("/{id}/noter")
-    public ResponseEntity<?> noterFournisseur(@PathVariable int id, @RequestParam double note) {
-        // Validation de la note
-        if (note < 1 || note > 5) {
-            return ResponseEntity.badRequest().body("La note doit être comprise entre 1 et 5");
+    public ResponseEntity<Fournisseur> noterFournisseur(
+            @PathVariable int id,
+            @RequestBody Map<String, Object> payload) {
+
+        Object noteObj = payload.get("note");
+        double note;
+
+        if (noteObj instanceof Integer) {
+            note = ((Integer) noteObj).doubleValue();
+        } else if (noteObj instanceof Double) {
+            note = (Double) noteObj;
+        } else {
+            throw new IllegalArgumentException("Le type de la note est incorrect.");
         }
 
-        try {
-            Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note);
-            return ResponseEntity.ok(fournisseurMisAJour);
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        String commentaire = (String) payload.get("commentaire");
+
+        Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note);
+        return ResponseEntity.ok(fournisseurMisAJour);
     }
 
     @GetMapping("/top-rated")
@@ -117,17 +134,4 @@ public class FournisseurController {
         List<Fournisseur> topRatedFournisseurs = fournisseurs.stream().limit(10).toList();
         return ResponseEntity.ok(topRatedFournisseurs);
     }
-
-    @GetMapping("/by-note")
-    public ResponseEntity<List<Fournisseur>> getFournisseursByNoteMoyenne(@RequestParam double noteMoyenne) {
-        List<Fournisseur> fournisseurs = fournisseurService.findAllByNoteMoyenne(noteMoyenne);
-        return ResponseEntity.ok(fournisseurs);
-    }
-
-    @GetMapping("/by-nombre-notes")
-    public ResponseEntity<List<Fournisseur>> getFournisseursByNombreNotes(@RequestParam int nombreNotes) {
-        List<Fournisseur> fournisseurs = fournisseurService.findAllByNombreNotes(nombreNotes);
-        return ResponseEntity.ok(fournisseurs);
-    }
-
 }
