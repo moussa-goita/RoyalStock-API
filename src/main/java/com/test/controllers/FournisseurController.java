@@ -123,7 +123,7 @@ public class FournisseurController {
 
         String commentaire = (String) payload.get("commentaire");
 
-        Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note);
+        Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note, commentaire);
         return ResponseEntity.ok(fournisseurMisAJour);
     }
 

@@ -32,7 +32,7 @@ public class Produit {
     private LocalDate dateExpiration;
 
     @Column(name = "seuil")
-    private int seuil= 0;
+    private Integer seuil= 0;
 
     @ManyToOne
     @JoinColumn(name = "categories_id", nullable = false)

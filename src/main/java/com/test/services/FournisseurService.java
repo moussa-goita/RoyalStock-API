@@ -54,7 +54,7 @@ public class FournisseurService {
 
 
 
-    public Fournisseur ajouterNotation(int fournisseurId, double note) {
+    public Fournisseur ajouterNotation(int fournisseurId, double note, String commentaire) {
         if (note < 1 || note > 5) {
             throw new IllegalArgumentException("La note doit être entre 1 et 5.");
         }
@@ -68,6 +68,7 @@ public class FournisseurService {
 
         fournisseur.setNoteMoyenne(nouvelleNote);
         fournisseur.setNombreNotes(nombreNotesActuel + 1);
+        fournisseur.setCommentaire(commentaire); // Assure-toi que cela est bien mis à jour
 
         return fournisseurRepository.save(fournisseur);
     }
