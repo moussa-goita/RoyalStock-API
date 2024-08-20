@@ -14,7 +14,11 @@ public interface FournisseurRepository extends JpaRepository<Fournisseur, Intege
 
     List<Fournisseur> findByEntrepotId(int entrepotId);
 
+<<<<<<< HEAD
     Optional<Fournisseur> findById(Long id);
+=======
+    Optional<Fournisseur> findById(int id);
+>>>>>>> 191a014 (Correction by chef)
 
     List<Fournisseur> findAllByStatut(Statut statut);
 

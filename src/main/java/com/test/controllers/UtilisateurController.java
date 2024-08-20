@@ -12,7 +12,11 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
+<<<<<<< HEAD
 @CrossOrigin(origins = "http://localhost:4200")
+=======
+//@CrossOrigin(origins = "http://localhost:4200")
+>>>>>>> 191a014 (Correction by chef)
 @RequestMapping("/api/utilisateurs")
 public class UtilisateurController {
 

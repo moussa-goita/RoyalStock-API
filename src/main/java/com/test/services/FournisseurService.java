@@ -41,6 +41,7 @@ public class FournisseurService {
         return fournisseurRepository.findByEntrepotId(entrepotId);
     }
 
+<<<<<<< HEAD
     //
 
     public Fournisseur mettreFournisseurPublic(Long fournisseurId) {
@@ -49,15 +50,30 @@ public class FournisseurService {
 
         fournisseur.setStatut(Statut.PUBLIC); // Changer le statut à PUBLIC
         return fournisseurRepository.save(fournisseur);
+=======
+    public Fournisseur mettreFournisseurPublic(int id) {
+        Fournisseur fournisseur = findById(id)
+                .orElseThrow(() -> new RuntimeException("Fournisseur non trouvé"));
+        fournisseur.setStatut(Statut.PUBLIC);
+        return save(fournisseur);
+>>>>>>> 191a014 (Correction by chef)
     }
 
     public List<Fournisseur> fourPublic(){
         return fournisseurRepository.findAllByStatut(Statut.PUBLIC);
     }
 
+<<<<<<< HEAD
     //
 
     public Fournisseur ajouterNotation(int fournisseurId, double note) {
+=======
+    public Fournisseur ajouterNotation(int fournisseurId, double note) {
+        if (note < 1 || note > 5) {
+            throw new IllegalArgumentException("La note doit être entre 1 et 5.");
+        }
+
+>>>>>>> 191a014 (Correction by chef)
         Fournisseur fournisseur = fournisseurRepository.findById(fournisseurId)
                 .orElseThrow(() -> new EntityNotFoundException("Fournisseur non trouvé avec l'ID: " + fournisseurId));
 
@@ -70,5 +86,9 @@ public class FournisseurService {
 
         return fournisseurRepository.save(fournisseur);
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 191a014 (Correction by chef)
 }
 

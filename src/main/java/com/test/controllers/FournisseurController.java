@@ -2,6 +2,10 @@ package com.test.controllers;
 
 import com.test.entities.Fournisseur;
 import com.test.entities.Produit;
+<<<<<<< HEAD
+=======
+import com.test.entities.Statut;
+>>>>>>> 191a014 (Correction by chef)
 import com.test.entities.Utilisateur;
 import com.test.services.FournisseurService;
 import com.test.services.UtilisateurService;
@@ -10,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+<<<<<<< HEAD
+=======
+import java.util.Map;
+>>>>>>> 191a014 (Correction by chef)
 
 @RestController
 @RequestMapping("/api/fournisseurs")
@@ -65,6 +73,15 @@ public class FournisseurController {
                     fournisseur.setFournName(fournisseurDetails.getFournName());
                     fournisseur.setAdresse(fournisseurDetails.getAdresse());
                     fournisseur.setTelephone(fournisseurDetails.getTelephone());
+<<<<<<< HEAD
+=======
+                    fournisseur.setEmail(fournisseurDetails.getEmail());
+                    fournisseur.setStatut(fournisseurDetails.getStatut());
+                    fournisseur.setCommentaire(fournisseurDetails.getCommentaire());
+                    fournisseur.setNombreNotes(fournisseurDetails.getNombreNotes());
+                    fournisseur.setNoteMoyenne(fournisseurDetails.getNoteMoyenne());
+                    fournisseur.setService(fournisseurDetails.getService());
+>>>>>>> 191a014 (Correction by chef)
                     Fournisseur updatedFournisseur = fournisseurService.save(fournisseur);
                     return ResponseEntity.ok().body(updatedFournisseur);
                 }).orElse(ResponseEntity.notFound().build());
@@ -78,21 +95,60 @@ public class FournisseurController {
 
     //
 
+<<<<<<< HEAD
     @PutMapping("/{id}/rendre-public")
     public ResponseEntity<Fournisseur> rendreFournisseurPublic(@PathVariable Long id) {
         Fournisseur fournisseurMisAJour = fournisseurService.mettreFournisseurPublic(id);
         return ResponseEntity.ok(fournisseurMisAJour);
     }
+=======
+    @PutMapping("/{id}/modifier-statut")
+    public ResponseEntity<Fournisseur> modifierStatutFournisseur(@PathVariable int id, @RequestBody String newStatut) {
+        Fournisseur fournisseur = fournisseurService.findById(id)
+                .orElseThrow(() -> new RuntimeException("Fournisseur non trouvé"));
+
+        if ("PUBLIC".equals(newStatut)) {
+            fournisseur.setStatut(Statut.PUBLIC);
+        } else if ("PRIVE".equals(newStatut)) {
+            fournisseur.setStatut(Statut.PRIVE);
+        }
+
+        Fournisseur fournisseurMisAJour = fournisseurService.save(fournisseur);
+        return ResponseEntity.ok(fournisseurMisAJour);
+    }
+
+>>>>>>> 191a014 (Correction by chef)
     // Méthode pour récupérer les fournisseurs publics
     @GetMapping("public")
     public List<Fournisseur> getFournisseursPublic() {
         return fournisseurService.fourPublic();
     }
 
+<<<<<<< HEAD
     //
 
     @PostMapping("/{id}/noter")
     public ResponseEntity<Fournisseur> noterFournisseur(@PathVariable int id, @RequestParam double note) {
+=======
+    @PostMapping("/{id}/noter")
+    public ResponseEntity<Fournisseur> noterFournisseur(
+            @PathVariable int id,
+            @RequestBody Map<String, Object> payload) {
+
+        Object noteObj = payload.get("note");
+        double note;
+
+        if (noteObj instanceof Integer) {
+            note = ((Integer) noteObj).doubleValue();
+        } else if (noteObj instanceof Double) {
+            note = (Double) noteObj;
+        } else {
+            throw new IllegalArgumentException("Le type de la note est incorrect.");
+        }
+
+        String commentaire = (String) payload.get("commentaire");
+
+>>>>>>> 191a014 (Correction by chef)
         Fournisseur fournisseurMisAJour = fournisseurService.ajouterNotation(id, note);
         return ResponseEntity.ok(fournisseurMisAJour);
     }
