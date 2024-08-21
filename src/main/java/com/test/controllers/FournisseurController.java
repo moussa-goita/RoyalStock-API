@@ -6,13 +6,23 @@ import com.test.entities.Statut;
 import com.test.entities.Utilisateur;
 import com.test.services.FournisseurService;
 import com.test.services.UtilisateurService;
+import jakarta.persistence.EntityNotFoundException;
+import lombok.Data;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+@Data
 @RestController
 @RequestMapping("/api/fournisseurs")
 public class FournisseurController {
@@ -134,4 +144,39 @@ public class FournisseurController {
         List<Fournisseur> topRatedFournisseurs = fournisseurs.stream().limit(10).toList();
         return ResponseEntity.ok(topRatedFournisseurs);
     }
+
+    //
+
+    @PostMapping("/{id}/upload-contrat")
+    public ResponseEntity<String> uploadContrat(@PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
+        Fournisseur fournisseur = fournisseurService.getFournisseurById(id);
+        fournisseur.setContrat(file.getBytes());
+        fournisseurService.saveFournisseur(fournisseur);
+        return ResponseEntity.ok("Contrat uploadé avec succès.");
+    }
+
+    @GetMapping("/{id}/contrat")
+    public ResponseEntity<byte[]> getContrat(@PathVariable int id) {
+        Optional<Fournisseur> fournisseur = fournisseurService.findById(id);
+        byte[] fileData = fournisseurService.getContrat(id);
+
+        if (fileData == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(fileData);
+    }
+
+    @DeleteMapping("/{id}/contrat")
+    public ResponseEntity<String> deleteContrat(@PathVariable int id) {
+        try {
+            fournisseurService.deleteContrat(id);
+            return ResponseEntity.ok("Contrat supprimé avec succès.");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Fournisseur non trouvé.");
+        }
+    }
+
+
+
 }
