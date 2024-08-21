@@ -17,7 +17,7 @@ public class Entrepot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int Id;
-
+    //
     @Column(name = "entrepot_name", nullable = false, unique = true)
     private String entrepotName;
 

@@ -1,10 +1,10 @@
 package com.test.services;
 
-import com.test.entities.Categorie;
 import com.test.entities.Fournisseur;
 import com.test.entities.Statut;
 import com.test.repositories.FournisseurRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,5 +72,30 @@ public class FournisseurService {
 
         return fournisseurRepository.save(fournisseur);
     }
-}
 
+    public Fournisseur saveFournisseur(Fournisseur fournisseur) {
+        return fournisseurRepository.save(fournisseur);
+    }
+
+    public void uploadContrat(int id, byte[] contratData) {
+        Fournisseur fournisseur = getFournisseurById(id);
+        fournisseur.setContrat(contratData);
+        save(fournisseur);
+    }
+
+    public Fournisseur getFournisseurById(int id) {
+        return fournisseurRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Fournisseur non trouvé avec l'ID: " + id));
+    }
+
+    public byte[] getContrat(int id) {
+        Fournisseur fournisseur = getFournisseurById(id);
+        return fournisseur.getContrat();
+    }
+
+    public void deleteContrat(int id) {
+        Fournisseur fournisseur = getFournisseurById(id);
+        fournisseur.setContrat(null); // Supprime la référence au fichier
+        saveFournisseur(fournisseur);
+    }
+}

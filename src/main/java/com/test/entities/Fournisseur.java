@@ -53,5 +53,7 @@ public class Fournisseur {
     @Column(name = "service")
     private String service; // Description du service fournisseur
 
-
+    @Lob
+    @Column(name = "imageContrat", columnDefinition = "BLOB")
+    private byte[] contrat; //  image ou PDF
 }
