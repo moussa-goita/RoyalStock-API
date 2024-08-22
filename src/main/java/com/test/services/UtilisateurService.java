@@ -142,7 +142,10 @@ public class UtilisateurService implements UserDetailsService  {
             userToUpdate.setEmail(utilisateur.getEmail());
             userToUpdate.setRole(utilisateur.getRole());
             userToUpdate.setEntrepot(utilisateur.getEntrepot());
-            if (!utilisateur.getPassword().equals(userToUpdate.getPassword())) {
+            /*if (!utilisateur.getPassword().equals(userToUpdate.getPassword())) {
+                userToUpdate.setPassword(bCryptPasswordEncoder.encode(utilisateur.getPassword()));
+            }*/
+            if (utilisateur.getPassword() != null && !utilisateur.getPassword().isEmpty()) {
                 userToUpdate.setPassword(bCryptPasswordEncoder.encode(utilisateur.getPassword()));
             }
             return utilisateurRepository.save(userToUpdate);
