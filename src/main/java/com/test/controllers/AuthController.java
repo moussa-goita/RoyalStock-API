@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "https://10.175.48.13:8080")
 @RequestMapping("/api/utilisateurs")
 public class AuthController {
 
